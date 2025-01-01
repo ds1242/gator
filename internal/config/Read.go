@@ -1,18 +1,31 @@
 package config
 
 import (
+	"encoding/json"
 	"fmt"
 	"os"
 )
 
-func Read() (Config, error) {
+func Read() (ConfigStruct, error) {
 	homeDir, err := os.UserHomeDir()
 	if err != nil {
-		fmt.Println("an error occurred getting the home dir: ")
-		return Config{}, err
+		fmt.Println("an error occurred getting the home dir")
+		return ConfigStruct{}, err
 	}
-	fmt.Println(homeDir)
+	dat, err := os.ReadFile(homeDir + "/.gatorconfig.json")
+	if err != nil {
+		fmt.Println("unable to open file")
+		return ConfigStruct{}, err
+	}
 
-	return Config{}, nil
+	config := ConfigStruct{}
+
+	err = json.Unmarshal(dat, &config)
+	if err != nil {
+		fmt.Println("error unmarshalling json")
+		return config, err
+	}
+
+	return config, nil
 
 }
