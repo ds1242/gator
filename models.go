@@ -7,3 +7,8 @@ import (
 type State struct {
 	config *config.ConfigJSON
 }
+
+type Command struct {
+	commandName string
+	arguments   []string
+}
