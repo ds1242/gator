@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os"
+	"path/filepath"
 )
 
 const configFileName = ".gatorconfig.json"
@@ -43,18 +44,15 @@ func Read() (ConfigJSON, error) {
 }
 
 func getConfigFilePath() (string, error) {
-
-	homeDir, err := os.UserHomeDir()
-
+	home, err := os.UserHomeDir()
 	if err != nil {
 		return "", err
 	}
-	configFilePath := homeDir + configFileName
-
-	return configFilePath, nil
+	fullPath := filepath.Join(home, configFileName)
+	return fullPath, nil
 }
 
-func write(cfg Config) error {
+func write(cfg ConfigJSON) error {
 	fullPath, err := getConfigFilePath()
 	if err != nil {
 		return err
