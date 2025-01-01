@@ -6,26 +6,35 @@ import (
 	"os"
 )
 
-func Read() (ConfigStruct, error) {
-	homeDir, err := os.UserHomeDir()
+func Read() (ConfigJSON, error) {
+	filePath, err := getConfigFilePath()
 	if err != nil {
-		fmt.Println("an error occurred getting the home dir")
-		return ConfigStruct{}, err
+		fmt.Println("error getting home dir")
 	}
-	dat, err := os.ReadFile(homeDir + "/.gatorconfig.json")
+	dat, err := os.ReadFile(filePath)
 	if err != nil {
 		fmt.Println("unable to open file")
-		return ConfigStruct{}, err
+		return ConfigJSON{}, err
 	}
+	j := ConfigJSON{}
 
-	config := ConfigStruct{}
-
-	err = json.Unmarshal(dat, &config)
+	err = json.Unmarshal(dat, &j)
 	if err != nil {
 		fmt.Println("error unmarshalling json")
-		return config, err
+		return j, err
 	}
+	return j, nil
 
-	return config, nil
+}
 
+func getConfigFilePath() (string, error) {
+
+	homeDir, err := os.UserHomeDir()
+
+	if err != nil {
+		return "", err
+	}
+	configFilePath := homeDir + "/.gatorconfig.json"
+
+	return configFilePath, nil
 }
