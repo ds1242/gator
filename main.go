@@ -8,13 +8,18 @@ import (
 )
 
 func main() {
-	configFile, err := config.Read()
+	cfg, err := config.Read()
 	if err != nil {
 		log.Fatal("Error getting home environment")
 	}
 
 	state := &State{
-		config: configFile,
+		config: &cfg,
 	}
 
+	cmds := &Commands{
+		handlers: make(map[string]func(*State, Command) error),
+	}
+
+	cmds.register("login", handlerLogin)
 }

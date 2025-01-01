@@ -4,7 +4,7 @@ import "fmt"
 
 func handlerLogin(s *State, cmd Command) error {
 	if len(cmd.arguments) == 0 {
-		return fmt.Errorf("handler expects the username to entered")
+		return fmt.Errorf("handler expects the username to be entered")
 	}
 
 	err := s.config.SetUser(cmd.arguments[0])
