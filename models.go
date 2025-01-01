@@ -12,3 +12,7 @@ type Command struct {
 	commandName string
 	arguments   []string
 }
+
+type Commands struct {
+	handlers map[string]func(*State, Command) error
+}
