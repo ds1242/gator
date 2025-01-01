@@ -6,6 +6,8 @@ import (
 	"os"
 )
 
+const configFileName = "/.gatorconfig.json"
+
 type ConfigJSON struct {
 	DBUrl       string `json:"db_url"`
 	CurrentUser string `json:"current_user_name,omitempty"`
