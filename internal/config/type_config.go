@@ -13,23 +13,20 @@ type ConfigJSON struct {
 	CurrentUser string `json:"current_user_name,omitempty"`
 }
 
-func (c ConfigJSON) SetUser() {
-	c.CurrentUser = "dshaw12"
+func (c ConfigJSON) SetUser(username string) error {
+	c.CurrentUser = username
 	dat, err := json.Marshal(c)
 	if err != nil {
-		fmt.Print("error marshalling")
-		return
+		return fmt.Errorf("error marshalling")
 	}
 
 	configPath, err := getConfigFilePath()
 	if err != nil {
-		fmt.Println("error getting file path")
-		return
+		return fmt.Errorf("error getting file path")
 	}
 
 	err = os.WriteFile(configPath, dat, 0644)
 	if err != nil {
-		fmt.Println("error writing to file")
-		return
+		return fmt.Errorf("error writing to file")
 	}
 }

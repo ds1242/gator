@@ -13,7 +13,7 @@ func main() {
 		log.Fatal("Error getting home environment")
 	}
 	fmt.Println(configFile)
-	configFile.SetUser()
+	configFile.SetUser("dshaw12")
 
 	configFileAgain, err := config.Read()
 	if err != nil {
