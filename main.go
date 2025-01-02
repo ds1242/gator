@@ -17,12 +17,31 @@ func main() {
 	state := &State{
 		config: &cfg,
 	}
-	fmt.Println(state)
+
 	cmds := &Commands{
 		handlers: make(map[string]func(*State, Command) error),
 	}
 
-	fmt.Println(os.Args)
-
 	cmds.register("login", handlerLogin)
+
+	args := os.Args
+
+	if len(args) < 2 {
+		log.Fatal("Not enough arguments entered")
+		os.Exit(1)
+	}
+
+	cmd := Command{
+		commandName: args[1],
+		arguments:   args[2:],
+	}
+
+	err = cmds.run(state, cmd)
+	if err != nil {
+		fmt.Println("Error: ", err)
+		os.Exit(1)
+	}
+
+	os.Exit(0)
+
 }
