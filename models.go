@@ -6,25 +6,25 @@ import (
 	"github.com/ds1242/gator.git/internal/config"
 )
 
-type State struct {
+type state struct {
 	config *config.ConfigJSON
 }
 
-type Command struct {
-	commandName string
-	arguments   []string
+type command struct {
+	Name string
+	Args []string
 }
 
-type Commands struct {
-	handlers map[string]func(*State, Command) error
+type commands struct {
+	registeredCommands map[string]func(*state, command) error
 }
 
-func (c *Commands) register(name string, f func(*State, Command) error) {
-	c.handlers[name] = f
+func (c *commands) register(name string, f func(*state, command) error) {
+	c.registeredCommands[name] = f
 }
 
-func (c *Commands) run(s *State, cmd Command) error {
-	if handler, ok := c.handlers[cmd.commandName]; ok {
+func (c *commands) run(s *state, cmd command) error {
+	if handler, ok := c.registeredCommands[cmd.Name]; ok {
 		err := handler(s, cmd)
 		if err != nil {
 			return err

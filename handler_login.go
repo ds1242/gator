@@ -2,12 +2,12 @@ package main
 
 import "fmt"
 
-func handlerLogin(s *State, cmd Command) error {
-	if len(cmd.arguments) == 0 {
-		return fmt.Errorf("handler expects the username to be entered")
+func handlerLogin(s *state, cmd command) error {
+	if len(cmd.Args) == 0 {
+		return fmt.Errorf("A username is required")
 	}
 
-	err := s.config.SetUser(cmd.arguments[0])
+	err := s.config.SetUser(cmd.Args[0])
 	if err != nil {
 		return err
 	}
