@@ -16,15 +16,15 @@ type command struct {
 }
 
 type commands struct {
-	handlers map[string]func(*state, command) error
+	registeredCommands map[string]func(*state, command) error
 }
 
 func (c *commands) register(name string, f func(*state, command) error) {
-	c.handlers[name] = f
+	c.registeredCommands[name] = f
 }
 
 func (c *commands) run(s *state, cmd command) error {
-	if handler, ok := c.handlers[cmd.Name]; ok {
+	if handler, ok := c.registeredCommands[cmd.Name]; ok {
 		err := handler(s, cmd)
 		if err != nil {
 			return err

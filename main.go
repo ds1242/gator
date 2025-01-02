@@ -14,12 +14,12 @@ func main() {
 		log.Fatal("Error getting home environment")
 	}
 
-	state := &state{
+	programState := &state{
 		config: &cfg,
 	}
 
 	cmds := &commands{
-		handlers: make(map[string]func(*state, command) error),
+		registeredCommands: make(map[string]func(*state, command) error),
 	}
 
 	cmds.register("login", handlerLogin)
@@ -36,7 +36,7 @@ func main() {
 		Args: args[2:],
 	}
 
-	err = cmds.run(state, cmd)
+	err = cmds.run(programState, cmd)
 	if err != nil {
 		fmt.Println("Error: ", err)
 		os.Exit(1)
