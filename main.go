@@ -1,11 +1,13 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"log"
 	"os"
 
 	"github.com/ds1242/gator.git/internal/config"
+	"github.com/ds1242/gator.git/internal/database"
 	_ "github.com/lib/pq"
 )
 
@@ -15,13 +17,16 @@ func main() {
 		log.Fatal("Error getting home environment")
 	}
 
-	db, err := sql.Open("postgres", dbURL)
+	db, err := sql.Open("postgres", cfg.DBURL)
 	if err != nil {
 		log.Fatal("error connecting to database")
 	}
 
+	dbQueries := database.New(db)
+
 	programState := &state{
 		config: &cfg,
+		db:     dbQueries,
 	}
 
 	cmds := &commands{
