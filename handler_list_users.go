@@ -18,11 +18,13 @@ func handlerListUsers(s *state, cmd command) error {
 	}
 
 	for i := 0; i < len(users); i++ {
+		var msg string
 		if users[i] == s.config.CurrentUserName {
-			fmt.Println("%s (current)", users[i])
+			msg = fmt.Sprintf("%s (current)", users[i])
 		} else {
-			fmt.Println("%s", users[i])
+			msg = fmt.Sprintf("%s", users[i])
 		}
+		fmt.Println(msg)
 	}
 
 	return nil
