@@ -15,6 +15,11 @@ func main() {
 		log.Fatal("Error getting home environment")
 	}
 
+	db, err := sql.Open("postgres", dbURL)
+	if err != nil {
+		log.Fatal("error connecting to database")
+	}
+
 	programState := &state{
 		config: &cfg,
 	}
