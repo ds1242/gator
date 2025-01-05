@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"html"
 )
 
 func handlerAgg(s *state, cmd command) error {
