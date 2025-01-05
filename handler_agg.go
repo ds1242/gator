@@ -16,12 +16,6 @@ func handlerAgg(s *state, cmd command) error {
 		return err
 	}
 
-	fmt.Println(html.UnescapeString(feed.Channel.Title))
-	fmt.Println(html.UnescapeString(feed.Channel.Description))
-	for i := 0; i < len(feed.Channel.Item); i++ {
-		fmt.Println(html.UnescapeString(feed.Channel.Item[i].Title))
-		fmt.Println(html.UnescapeString(feed.Channel.Item[i].Description))
-	}
-
+	fmt.Printf("Feed: %+v\n", feed)
 	return nil
 }
