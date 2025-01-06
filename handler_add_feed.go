@@ -29,7 +29,11 @@ func databaseFeedToFeed(feed database.Feed) Feed {
 	}
 }
 
-func handlerAddFeed(s *state, cmd command, name string, url string) error {
+func handlerAddFeed(s *state, cmd command) error {
+	if len(cmd.Args) < 2 {
+		return fmt.Errorf("not enough arugments")
+	}
+
 	currentUserName := s.config.CurrentUserName
 	currentUserId, err := s.db.GetUser(context.Background(), currentUserName)
 	if err != nil {
@@ -39,8 +43,8 @@ func handlerAddFeed(s *state, cmd command, name string, url string) error {
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		Name:      name,
-		Url:       url,
+		Name:      cmd.Args[0],
+		Url:       cmd.Args[1],
 		UserID:    currentUserId.ID,
 	})
 	if err != nil {
