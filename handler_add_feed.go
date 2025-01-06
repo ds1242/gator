@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"net/url"
 	"time"
 
 	"github.com/ds1242/gator.git/internal/database"
@@ -32,6 +33,11 @@ func databaseFeedToFeed(feed database.Feed) Feed {
 func handlerAddFeed(s *state, cmd command) error {
 	if len(cmd.Args) < 2 {
 		return fmt.Errorf("not enough arugments")
+	}
+
+	_, err := url.ParseRequestURI(cmd.Args[1])
+	if err != nil {
+		return fmt.Errorf("invalid url entered")
 	}
 
 	currentUserName := s.config.CurrentUserName
