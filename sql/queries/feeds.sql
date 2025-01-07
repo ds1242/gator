@@ -40,3 +40,8 @@ INNER JOIN feeds ON inserted_feed_follow.feed_id = feeds.id;
 SELECT *
 FROM feeds
 WHERE url = $1;
+
+
+-- name: GetFeedFollowsForUser :many
+SELECT *
+FROM 
