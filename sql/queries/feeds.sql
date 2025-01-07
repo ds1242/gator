@@ -43,5 +43,7 @@ WHERE url = $1;
 
 
 -- name: GetFeedFollowsForUser :many
-SELECT *
-FROM 
+SELECT feed_follows.*
+FROM feed_follows
+INNER JOIN users ON feed_follows.user_id = users.id
+WHERE users.name = $1;
