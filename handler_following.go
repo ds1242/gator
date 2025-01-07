@@ -12,7 +12,7 @@ func handlerFollowing(s *state, cmd command, user database.User) error {
 		return fmt.Errorf("too many arguments")
 	}
 
-	feeds, err := s.db.GetFeedFollowsForUser(context.Background(), user.ID.String())
+	feeds, err := s.db.GetFeedFollowsForUser(context.Background(), user.ID)
 	if err != nil {
 		return err
 	}
