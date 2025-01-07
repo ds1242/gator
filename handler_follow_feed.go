@@ -9,17 +9,12 @@ import (
 	"github.com/google/uuid"
 )
 
-func handlerFollowFeed(s *state, cmd command) error {
+func handlerFollowFeed(s *state, cmd command, user database.User) error {
 	if len(cmd.Args) == 0 {
 		return fmt.Errorf("A url is required")
 	}
 
 	feed, err := s.db.GetFeedByURL(context.Background(), cmd.Args[0])
-	if err != nil {
-		return err
-	}
-
-	user, err := s.db.GetUser(context.Background(), s.config.CurrentUserName)
 	if err != nil {
 		return err
 	}

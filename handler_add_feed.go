@@ -30,7 +30,7 @@ func databaseFeedToFeed(feed database.Feed) Feed {
 	}
 }
 
-func handlerAddFeed(s *state, cmd command) error {
+func handlerAddFeed(s *state, cmd command, user database.User) error {
 	if len(cmd.Args) < 2 {
 		return fmt.Errorf("not enough arugments")
 	}
@@ -40,18 +40,13 @@ func handlerAddFeed(s *state, cmd command) error {
 		return fmt.Errorf("invalid url entered")
 	}
 
-	currentUserName := s.config.CurrentUserName
-	currentUserId, err := s.db.GetUser(context.Background(), currentUserName)
-	if err != nil {
-		return err
-	}
 	feed, err := s.db.AddToFeed(context.Background(), database.AddToFeedParams{
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
 		Name:      cmd.Args[0],
 		Url:       cmd.Args[1],
-		UserID:    currentUserId.ID,
+		UserID:    user.ID,
 	})
 	if err != nil {
 		return err
@@ -61,7 +56,7 @@ func handlerAddFeed(s *state, cmd command) error {
 		ID:        uuid.New(),
 		CreatedAt: time.Now().UTC(),
 		UpdatedAt: time.Now().UTC(),
-		UserID:    currentUserId.ID,
+		UserID:    user.ID,
 		FeedID:    feed.ID,
 	})
 	if err != nil {
