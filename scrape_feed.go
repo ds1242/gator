@@ -35,8 +35,27 @@ func scrapeFeeds(s *state) error {
 	}
 
 	for _, feed := range rssfeed.Channel.Item {
-		msg := fmt.Sprintf("%s", feed.Title)
-		post, err := s.db.CreatePost(context.Background(), database.CreatePostParams{
+
+		// List of potential layouts
+		layouts := []string{
+			time.RFC3339,
+			time.UnixDate,
+			time.RFC1123Z,
+			// Add custom layouts as needed
+		}
+
+		var timeConverted time.Time
+		var err error
+
+		// Attempt parsing with each layout
+		for _, layout := range layouts {
+			timeConverted, err = time.Parse(layout, feed.PubDate)
+			if err == nil {
+				break
+			}
+		}
+
+		_, err = s.db.CreatePost(context.Background(), database.CreatePostParams{
 			ID:        uuid.New(),
 			CreatedAt: time.Now().UTC(),
 			UpdatedAt: time.Now().UTC(),
@@ -45,14 +64,21 @@ func scrapeFeeds(s *state) error {
 				String: feed.Description,
 				Valid:  true,
 			},
-			PublishedAt: feed.PubDate,
+			PublishedAt: sql.NullTime{
+				Time:  timeConverted,
+				Valid: true,
+			},
 			FeedID: uuid.NullUUID{
 				UUID:  feedToFetch.ID,
 				Valid: true,
 			},
 			Url: feed.Link,
 		})
-		fmt.Println(msg)
+
+		if err != nil {
+			fmt.Println(err)
+		}
+
 	}
 
 	return nil
