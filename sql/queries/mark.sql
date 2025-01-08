@@ -5,7 +5,7 @@ WHERE id = $3
 RETURNING *;
 
 -- name: GetNextFeedToFetch :one
-SELECT id, url
+SELECT url
 FROM feeds
 ORDER BY last_fetched_at ASC NULLS FIRST
 LIMIT 1;

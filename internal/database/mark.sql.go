@@ -14,22 +14,17 @@ import (
 )
 
 const getNextFeedToFetch = `-- name: GetNextFeedToFetch :one
-SELECT id, url
+SELECT url
 FROM feeds
 ORDER BY last_fetched_at ASC NULLS FIRST
 LIMIT 1
 `
 
-type GetNextFeedToFetchRow struct {
-	ID  uuid.UUID
-	Url string
-}
-
-func (q *Queries) GetNextFeedToFetch(ctx context.Context) (GetNextFeedToFetchRow, error) {
+func (q *Queries) GetNextFeedToFetch(ctx context.Context) (string, error) {
 	row := q.db.QueryRowContext(ctx, getNextFeedToFetch)
-	var i GetNextFeedToFetchRow
-	err := row.Scan(&i.ID, &i.Url)
-	return i, err
+	var url string
+	err := row.Scan(&url)
+	return url, err
 }
 
 const markFeedFetched = `-- name: MarkFeedFetched :one
