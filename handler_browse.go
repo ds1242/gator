@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"os"
 	"strconv"
 
 	"github.com/ds1242/gator.git/internal/database"
@@ -11,12 +10,16 @@ import (
 
 func handlerBrowse(s *state, cmd command, user database.User) error {
 	var numberOfPosts int
-	if len(os.Args) == 1 {
+	if len(cmd.Args) == 0 {
 		numberOfPosts = 2
 	}
-	numberOfPosts, err := strconv.Atoi(os.Args[1])
-	if err != nil {
-		return err
+
+	if len(cmd.Args) == 1 {
+		postInput, err := strconv.Atoi(cmd.Args[0])
+		if err != nil {
+			return err
+		}
+		numberOfPosts = postInput
 	}
 
 	posts, err := s.db.GetPostsForUser(context.Background(), database.GetPostsForUserParams{
