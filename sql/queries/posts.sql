@@ -12,4 +12,13 @@ VALUES (
 )
 RETURNING *;
 
+-- name: GetPostsForUser :many
+SELECT posts.*
+FROM posts
+INNER JOIN feeds ON feeds.id = feed_id
+INNER JOIN users ON feeds.user_id = users.id 
+WHERE users.id = $1
+ORDER BY published_at ASC
+LIMIT $2;
+
 
