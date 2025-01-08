@@ -13,39 +13,36 @@ Config file instructions
 
 Once you have downloaded the required tools.  The following commands will let you run the programe
 
-Register a new user:
+##### Register a new user:
 `go run . register (name)`
 
-Login a user
+##### Login a user
 `go run . login (name)`
 
-Follow a feed
+##### Follow a feed
 `go run . addfeed "(feed name)" "https://feedname.com"`
 
-Unfollow a feed
+##### Unfollow a feed
 `go run . unfollow "https://feedname.com"`
 
-Check what feeds the current logged in user is following
+##### Check what feeds the current logged in user is following
 `go run . following`
 
-Delete all users
+##### Delete all users
 `go run . reset`
 
-Browse saved posts
+##### Browse saved posts
 `go run . browse (a number of posts)`
 (defaults to 2)
 
-Fetch all feeds based on a time frame
-___
+##### Fetch all feeds based on a time frame
 Enter any time value such as 1s 1min 1hr etc...
-
 `go run . agg (time)`
 
-
-Fetch all feeds
+##### Fetch all feeds
 `go run . feeds`
 
-List all saved users
+##### List all saved users
 `go run . users`
 
 ## Contributing
