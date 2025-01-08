@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/ds1242/gator.git/internal/database"
+	"github.com/google/uuid"
 )
 
 func scrapeFeeds(s *state) error {
@@ -35,6 +36,22 @@ func scrapeFeeds(s *state) error {
 
 	for _, feed := range rssfeed.Channel.Item {
 		msg := fmt.Sprintf("%s", feed.Title)
+		post, err := s.db.CreatePost(context.Background(), database.CreatePostParams{
+			ID:        uuid.New(),
+			CreatedAt: time.Now().UTC(),
+			UpdatedAt: time.Now().UTC(),
+			Title:     feed.Title,
+			Description: sql.NullString{
+				String: feed.Description,
+				Valid:  true,
+			},
+			PublishedAt: feed.PubDate,
+			FeedID: uuid.NullUUID{
+				UUID:  feedToFetch.ID,
+				Valid: true,
+			},
+			Url: feed.Link,
+		})
 		fmt.Println(msg)
 	}
 
