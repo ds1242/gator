@@ -11,7 +11,7 @@ Config file instructions
 
 ## Usage
 
-Once you have downloaded the required tools.  The following commands will let you run the programe
+Once you have downloaded the required tools.  The following commands will let you run the program.
 
 ##### Register a new user:
 `go run . register (name)`
